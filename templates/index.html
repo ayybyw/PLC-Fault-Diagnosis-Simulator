@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PLC 故障诊断模拟平台 · 自动输送线</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">PLC</span>
+      <div class="brand-text">
+        <h1>故障诊断模拟平台</h1>
+        <p class="sub">自动输送线 · 工业售后与维修培训</p>
+      </div>
+    </div>
+    <div class="line-badge" id="line-badge">
+      <span class="badge-dot"></span>
+      <span id="line-status">连接中…</span>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section class="panel">
+      <h2>设备总览</h2>
+      <div class="metrics">
+        <div class="metric">
+          <label>电机状态</label>
+          <strong id="m-motor">--</strong>
+        </div>
+        <div class="metric">
+          <label>传感器</label>
+          <strong id="m-sensor">--</strong>
+        </div>
+        <div class="metric">
+          <label>温度</label>
+          <strong id="m-temperature">--</strong>
+        </div>
+        <div class="metric">
+          <label>运行时长</label>
+          <strong id="m-runtime">--</strong>
+        </div>
+      </div>
+      <p class="line-message" id="line-message">--</p>
+    </section>
+
+    <section class="panel">
+      <h2>PLC I/O 实时监视</h2>
+      <div class="io-grid" id="io-grid"></div>
+    </section>
+
+    <section class="panel" id="alarm-panel">
+      <h2>报警信息</h2>
+      <div class="alarm" id="alarm">--</div>
+    </section>
+
+    <section class="panel">
+      <h2>诊断结果</h2>
+      <div class="diagnosis" id="diagnosis"></div>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <div class="control-group">
+      <span class="control-label">故障注入</span>
+      <div class="fault-buttons" id="fault-buttons"></div>
+    </div>
+    <button class="btn-reset" id="btn-reset">一键复位</button>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

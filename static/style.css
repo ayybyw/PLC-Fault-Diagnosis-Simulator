@@ -1,0 +1,329 @@
+/* ===== PLC 故障诊断模拟平台 · 工业监控风格 ===== */
+:root {
+  --bg: #0d141d;
+  --panel: #16202c;
+  --panel-2: #1c2836;
+  --border: #24344a;
+  --text: #e6edf5;
+  --text-dim: #8fa3ba;
+  --accent: #4da3ff;
+  --ok: #2ecc71;
+  --warn: #f5c542;
+  --fault: #ff5d5d;
+  --mono: "Consolas", "JetBrains Mono", "Courier New", monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- 顶栏 ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  background: linear-gradient(180deg, #16202c 0%, #121b25 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 46px; height: 46px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #2f6fb8);
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.brand-text h1 { font-size: 18px; font-weight: 600; letter-spacing: .5px; }
+.brand-text .sub { font-size: 12px; color: var(--text-dim); }
+
+.line-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.badge-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 8px var(--ok);
+  transition: background .2s, box-shadow .2s;
+}
+
+.line-badge.is-fault { border-color: rgba(255,93,93,.5); }
+.line-badge.is-fault .badge-dot {
+  background: var(--fault);
+  box-shadow: 0 0 8px var(--fault);
+  animation: pulse 1.1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+
+/* ---------- 主网格 ---------- */
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 20px 28px;
+  align-content: start;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.panel h2 {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ---------- 设备指标 ---------- */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.metric {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.metric label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.metric strong {
+  font-family: var(--mono);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.line-message {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: rgba(77,163,255,.07);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  font-size: 13px;
+  color: #b9cde4;
+}
+
+/* ---------- I/O 监视 ---------- */
+.io-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.io-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  transition: border-color .2s;
+}
+
+.io-lamp {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  flex: 0 0 16px;
+  background: #3a4759;
+  box-shadow: inset 0 0 4px rgba(0,0,0,.6);
+  transition: background .2s, box-shadow .2s;
+}
+
+.io-cell.is-on .io-lamp {
+  background: var(--ok);
+  box-shadow: 0 0 10px var(--ok), inset 0 0 3px rgba(255,255,255,.5);
+}
+
+.io-cell.is-off .io-lamp {
+  background: var(--fault);
+  box-shadow: 0 0 10px rgba(255,93,93,.75), inset 0 0 3px rgba(255,255,255,.35);
+}
+
+.io-cell.is-off { border-color: rgba(255,93,93,.45); }
+
+.io-name {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 46px;
+}
+
+.io-desc { font-size: 12px; color: var(--text-dim); }
+
+.io-val {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.io-cell.is-on .io-val { color: var(--ok); }
+.io-cell.is-off .io-val { color: var(--fault); }
+
+/* ---------- 报警 ---------- */
+.alarm {
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  background: rgba(46,204,113,.08);
+  border: 1px solid rgba(46,204,113,.3);
+  color: var(--ok);
+}
+
+.alarm.is-fault {
+  background: rgba(255,93,93,.1);
+  border-color: rgba(255,93,93,.45);
+  color: var(--fault);
+  animation: pulse 1.4s infinite;
+}
+
+/* ---------- 诊断结果 ---------- */
+.diagnosis-empty { color: var(--text-dim); font-size: 13px; }
+
+.diag-block { margin-bottom: 16px; }
+.diag-block:last-child { margin-bottom: 0; }
+
+.diag-block h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--warn);
+  margin-bottom: 8px;
+  letter-spacing: .5px;
+}
+
+.diag-block ol { list-style: none; counter-reset: step; }
+
+.diag-block ol li {
+  counter-increment: step;
+  position: relative;
+  padding: 6px 0 6px 32px;
+  font-size: 13px;
+  color: #c6d6e8;
+  border-bottom: 1px dashed rgba(36,52,74,.8);
+}
+
+.diag-block ol li:last-child { border-bottom: none; }
+
+.diag-block ol li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 7px;
+  width: 20px; height: 20px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+}
+
+/* ---------- 底部控制区 ---------- */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 28px 24px;
+  border-top: 1px solid var(--border);
+  background: #121b25;
+  flex-wrap: wrap;
+}
+
+.control-group { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+.control-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.fault-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+
+button {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 18px;
+  cursor: pointer;
+  transition: all .18s;
+}
+
+button:hover { border-color: var(--accent); color: var(--accent); }
+
+button:active { transform: translateY(1px); }
+
+button.is-active {
+  background: rgba(255,93,93,.14);
+  border-color: var(--fault);
+  color: var(--fault);
+}
+
+.btn-reset {
+  background: rgba(77,163,255,.12);
+  border-color: rgba(77,163,255,.5);
+  color: var(--accent);
+}
+
+.btn-reset:hover { background: rgba(77,163,255,.22); color: #fff; }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; padding: 16px; }
+  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .io-grid { grid-template-columns: 1fr; }
+  .topbar, .controls { padding-left: 16px; padding-right: 16px; }
+}

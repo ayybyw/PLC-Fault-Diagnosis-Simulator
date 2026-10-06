@@ -4,6 +4,12 @@
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white) ![Flask](https://img.shields.io/badge/Flask-3.0%2B-000000?logo=flask&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-green)
 
+## 界面预览
+
+![界面预览](screenshots/ui-overview.png)
+
+> 上图为注入「电机过载」故障后的界面：Y0 电机启动输出与 M100 电机保护反馈同时熄灭，右侧同步给出可能原因与标准排查步骤。
+
 ## 功能
 
 - 实时展示输送线、电机、传感器、温度和运行时长状态
@@ -16,15 +22,20 @@
 
 ```text
 PLC-Fault-Diagnosis-Simulator/
-├── app.py
-├── requirements.txt
+├── app.py                  # Flask 应用：配置化故障字典 + REST 接口
+├── requirements.txt        # 运行依赖
+├── requirements-dev.txt    # 开发依赖（pytest）
+├── conftest.py             # pytest 路径配置
 ├── static/
-│   ├── style.css
-│   └── script.js
+│   ├── style.css           # 工业监控风格样式
+│   └── script.js           # 状态轮询与面板渲染
 ├── templates/
-│   └── index.html
+│   └── index.html          # 页面模板
+├── tests/
+│   └── test_app.py         # 接口与模板回归测试
 ├── screenshots/
-│   └── README.md
+│   └── ui-overview.png     # 界面预览
+├── LICENSE
 └── README.md
 ```
 
@@ -45,6 +56,23 @@ python app.py
 ```
 
 浏览器打开 `http://127.0.0.1:5000`。
+
+## 测试
+
+```bash
+pip install -r requirements-dev.txt
+pytest tests/ -v
+```
+
+覆盖首页模板渲染、静态资源可访问、四类故障的关键信号位与报警码、未知故障返回 404、一键复位恢复基线，以及故障切换不残留旧状态，共 11 项用例。
+
+## 接口
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/api/status` | 查询设备当前状态与 I/O 点位 |
+| POST | `/api/fault/<fault_key>` | 注入故障，`fault_key` 取 `sensor` / `overload` / `emergency` / `communication` |
+| POST | `/api/reset` | 一键复位到正常状态 |
 
 ## 诊断逻辑
 
