@@ -45,9 +45,19 @@
       <p class="line-message" id="line-message">--</p>
     </section>
 
-    <section class="panel">
+    <section class="panel" id="io-panel">
       <h2>PLC I/O 实时监视</h2>
       <div class="io-grid" id="io-grid"></div>
+      <div class="ladder-wrap">
+        <h3 class="panel-sub">控制回路 · 梯形图</h3>
+        <div class="ladder" id="ladder"></div>
+        <div class="ladder-legend">
+          <span><i class="lg-on"></i>导通</span>
+          <span><i class="lg-off"></i>无电</span>
+          <span><i class="lg-fault"></i>断开</span>
+          <span><i class="lg-coil"></i>输出</span>
+        </div>
+      </div>
     </section>
 
     <section class="panel" id="alarm-panel">
@@ -55,18 +65,30 @@
       <div class="alarm" id="alarm">--</div>
     </section>
 
-    <section class="panel">
+    <section class="panel" id="diagnosis-panel">
       <h2>诊断结果</h2>
       <div class="diagnosis" id="diagnosis"></div>
     </section>
   </main>
 
   <footer class="controls">
-    <div class="control-group">
+    <div class="control-group" id="practice-group">
       <span class="control-label">故障注入</span>
       <div class="fault-buttons" id="fault-buttons"></div>
     </div>
-    <button class="btn-reset" id="btn-reset">一键复位</button>
+
+    <div class="control-group" id="exam-group" hidden>
+      <span class="control-label">考核</span>
+      <div class="fault-buttons">
+        <button id="btn-exam-start">随机出题</button>
+      </div>
+      <span class="exam-score" id="exam-score"></span>
+    </div>
+
+    <div class="footer-right">
+      <button class="btn-reset" id="btn-reset">一键复位</button>
+      <button class="btn-exam" id="btn-exam">考核模式</button>
+    </div>
   </footer>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>

@@ -15,6 +15,8 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+[hidden] { display: none !important; }
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -109,6 +111,19 @@ body {
   margin-bottom: 14px;
   border-bottom: 1px solid var(--border);
 }
+
+/* I/O 与梯形图占两行，诊断结果横跨底部 */
+#io-panel { grid-row: span 2; }
+#diagnosis-panel { grid-column: 1 / -1; }
+
+#diagnosis-panel .diagnosis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 28px;
+  align-items: start;
+}
+
+#diagnosis-panel .diagnosis.exam-mode { display: block; }
 
 /* ---------- 设备指标 ---------- */
 .metrics {
@@ -319,6 +334,91 @@ button.is-active {
 }
 
 .btn-reset:hover { background: rgba(77,163,255,.22); color: #fff; }
+
+/* ---------- 梯形图 ---------- */
+.ladder-wrap { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+
+.panel-sub {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.ladder { margin: 2px 0 4px; }
+.ladder svg { width: 100%; height: auto; display: block; }
+
+.ld-addr { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+.ld-desc { font-size: 11px; fill: #7c8fa6; }
+.ld-coil { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+.ld-rail { stroke: #2b3b4f; stroke-width: 2; }
+
+.ladder-legend {
+  display: flex;
+  gap: 18px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.ladder-legend span { display: flex; align-items: center; gap: 6px; }
+.ladder-legend i { width: 16px; height: 2px; display: block; }
+.lg-on { background: var(--accent); }
+.lg-off { background: #39485c; }
+.lg-fault { background: var(--fault); }
+.lg-coil { background: var(--ok); }
+
+/* ---------- 考核模式 ---------- */
+.footer-right { display: flex; gap: 10px; align-items: center; margin-left: auto; }
+
+.btn-exam {
+  background: rgba(245,197,66,.1);
+  border-color: rgba(245,197,66,.45);
+  color: var(--warn);
+}
+
+.btn-exam:hover { background: rgba(245,197,66,.2); color: #fff; }
+.btn-exam.is-on { background: rgba(245,197,66,.22); border-color: var(--warn); color: #fff; }
+
+.exam-score { font-family: var(--mono); font-size: 13px; color: var(--warn); }
+
+.exam-hint { font-size: 13px; color: var(--text-dim); margin-bottom: 14px; }
+
+.exam-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+.exam-opt {
+  text-align: left;
+  padding: 12px 14px;
+  font-weight: 600;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.exam-opt:hover { border-color: var(--accent); color: var(--accent); }
+
+.exam-opt.is-right {
+  border-color: var(--ok);
+  background: rgba(46,204,113,.12);
+  color: var(--ok);
+}
+
+.exam-opt.is-wrong {
+  border-color: var(--fault);
+  background: rgba(255,93,93,.12);
+  color: var(--fault);
+}
+
+.exam-opt:disabled { cursor: default; opacity: .5; }
+.exam-opt.is-right:disabled, .exam-opt.is-wrong:disabled { opacity: 1; }
+
+.exam-result { margin-top: 16px; padding: 14px; border-radius: 8px; font-size: 13px; }
+.exam-result.ok { background: rgba(46,204,113,.1); border: 1px solid rgba(46,204,113,.4); color: var(--ok); }
+.exam-result.bad { background: rgba(255,93,93,.1); border: 1px solid rgba(255,93,93,.4); color: var(--fault); }
+.exam-result strong { font-family: var(--mono); }
+
+.exam-meta { display: flex; gap: 16px; margin-top: 8px; font-size: 12px; color: var(--text-dim); }
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 900px) {

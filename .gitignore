@@ -1,6 +1,18 @@
+# Python
+.venv/
 __pycache__/
 *.py[cod]
-.venv/
-venv/
-.env
-.pytest_cache/
+
+# 打包产物（exe 请放 GitHub Releases，不要提交到仓库）
+build/
+dist/
+*.spec
+
+# 临时文件
+icon_preview.png
+*.log
+.DS_Store
+Thumbs.db
+
+# 原始字节码后端（兜底用，有 app.py 就不需要；想保留请注释掉下一行）
+runtime/
